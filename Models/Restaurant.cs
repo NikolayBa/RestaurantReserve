@@ -14,8 +14,9 @@ namespace RestaurantReserve.Models
         public string city { get; set; }
         public string address { get; set; }
         public virtual List<Table> tables { get; set; }
-
-        public DbSet<Restaurant> Restaurants { get; set; }
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
+        public ApplicationUser User { get; set; }
         public virtual ICollection<RestaurantsUser> FavoriteRestaurantsUsers { get; set; }
     }
 

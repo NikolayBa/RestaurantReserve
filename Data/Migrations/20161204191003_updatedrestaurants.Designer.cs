@@ -8,9 +8,10 @@ using RestaurantReserve.Data;
 namespace RestaurantReserve.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161204191003_updatedrestaurants")]
+    partial class updatedrestaurants
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -185,9 +186,13 @@ namespace RestaurantReserve.Data.Migrations
 
                     b.Property<string>("name");
 
+                    b.Property<int?>("restaurantId1");
+
                     b.HasKey("restaurantId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("restaurantId1");
 
                     b.ToTable("Restaurants");
                 });
@@ -277,6 +282,10 @@ namespace RestaurantReserve.Data.Migrations
                     b.HasOne("RestaurantReserve.Models.ApplicationUser", "User")
                         .WithMany("Ownedrestaurants")
                         .HasForeignKey("UserId");
+
+                    b.HasOne("RestaurantReserve.Models.Restaurant")
+                        .WithMany("Restaurants")
+                        .HasForeignKey("restaurantId1");
                 });
 
             modelBuilder.Entity("RestaurantReserve.Models.RestaurantsUser", b =>
