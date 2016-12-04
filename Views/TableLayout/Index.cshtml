@@ -1,0 +1,37 @@
+@model RestaurantReserve.Models.TableLayoutViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    <h4>Restaurant</h4>
+    <hr />
+    @ViewData["currentUser"].ToString()
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.restaurant.name)
+        </dt>
+        @*<dd>
+            @Html.DisplayFor(model => model.restaurant.)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.city)
+        </dt>
+        <dd>*@
+            @Html.DisplayFor(model => model.restaurant.name)
+        </dd>
+        @*<dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>*@
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
