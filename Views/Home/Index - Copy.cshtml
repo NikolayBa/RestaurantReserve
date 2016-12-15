@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section id="mainContent">
+    <div class="content_top">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm6">
+                <div class="latest_slider">
+                    <div class="slick_slider">
+                        <!--div class="single_iteam"><img src="images/img1.jpg" alt="">
+                          <h2><a class="slider_tittle" href="pages/single.html">Welcome to our amazing restaurant</a></h2>
+                        </div-->
+                        <div class="single_iteam">
+                            <img src="images/img2.jpg" alt="">
+                            <h2><a class="slider_tittle" asp-controller="PhysicalTables" asp-action="Redisplay"> Popular</a></h2>
+                        </div>
+                        <!--div class="single_iteam"><img src="images/img3.jpg" alt="">
+                          <h2><a class="slider_tittle" href="pages/single.html">Welcome to our amazing restaurant</a></h2>
+                        </div>
+                        <div class="single_iteam"><img src="images/img3.jpg" alt="">
+                          <h2><a class="slider_tittle" href="pages/single.html">Welcome to our amazing restaurant</a></h2>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm6">
+                <div class="content_top_right">
+                    <ul class="featured_nav wow fadeInDown">
+                        <li>
+                            <img src="images/diva.jpg" alt="">
+                            <div class="title_caption"><a asp-controller="PhysicalTables" asp-action="Redisplay" asp-route-id="3">Welcome to Diva</a></div>
+                        </li>
+                        <li>
+                            <img src="images/aseva.jpg" alt="">
+                            <div class="title_caption"><a href="pages/single.html">Welcome to Aseva</a></div>
+                        </li>
+                        <li>
+                            <img src="images/paparazzi.jpg" alt="">
+                            <div class="title_caption"><a href="pages/single.html">Welcome to Paparazzi</a></div>
+                        </li>
+                        <li>
+                            <img src="images/prego.jpg" alt="">
+                            <div class="title_caption"><a href="pages/single.html">Welcome to Prego</a></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="row">
+
+</div>

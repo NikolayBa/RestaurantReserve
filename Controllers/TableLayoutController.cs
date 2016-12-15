@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using RestaurantReserve.Models;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace RestaurantReserve.Controllers
 {
@@ -41,10 +44,35 @@ namespace RestaurantReserve.Controllers
             //return View(restaurant);
 
             ClaimsPrincipal currentUser = this.User;
-            var currentUserID = currentUser.FindFirst(ClaimTypes.Name).Value;
+            var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            ViewData["restauranId"] = id;
             ViewData["currentUser"] = currentUserID;
             return View();
+        }
+
+
+
+        [HttpPost]
+        public ActionResult CreateSchema(List<string> tableJson)
+        {
+            foreach(var a in tableJson)
+            {
+                PhysicalTable x = new PhysicalTable();
+              
+                x.isReserved = false;
+            }
+            return View("~/Restaurants/Index.cshtml");
+        }
+        public async Task<IActionResult> TestAction([FromBody]List<PhysicalTable> PhyiscalT)
+        {
+            foreach (var a in PhyiscalT)
+            {
+                _context.Add(a);
+            }
+            await _context.SaveChangesAsync();
+
+            return Json("ok");
         }
     }
 }

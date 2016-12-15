@@ -4,46 +4,68 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<div id="preloader">
+    <div id="status">&nbsp;</div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<section id="mainContent">
+    <div class="content_top">
+        <div class="row">
+            <!-- <div class="col-lg-6 col-md-6 col-sm6">
+                 <div class="latest_slider">
+                     <div class="slick_slider">
+                         <!--div class="single_iteam"><img src="images/img1.jpg" alt="">
+                           <h2><a class="slider_tittle" href="pages/single.html">Welcome to our amazing restaurant</a></h2>
+                         </div
+                         <div class="single_iteam">
+                             <img src="images/img2.jpg" alt="">
+                             <h2><a class="slider_tittle" asp-controller="PhysicalTables" asp-action="Redisplay"> Popular</a></h2>
+                         </div>
+                         <!--div class="single_iteam"><img src="images/img3.jpg" alt="">
+                           <h2><a class="slider_tittle" href="pages/single.html">Welcome to our amazing restaurant</a></h2>
+                         </div>
+                         <div class="single_iteam"><img src="images/img3.jpg" alt="">
+                           <h2><a class="slider_tittle" href="pages/single.html">Welcome to our amazing restaurant</a></h2>
+                         </div>
+                     </div>
+                 </div>
+             </div>-->
+
+            <div class="col-lg-12 col-md-12 col-sm12">
+
+                <ul class="featured_nav wow fadeInDown">
+                    @foreach (var item in Model)
+                    {
+                        <li>
+                            <img src="@item.pictureUrl" alt="No Picture">
+                            <div class="title_caption">
+                                <a asp-controller="PhysicalTables" asp-action="Redisplay" asp-route-id="@item.restaurantId">  @Html.DisplayFor(modelItem => item.name)</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.city)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.tables)
-            </th>
-        </tr>
-    </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.city)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.restaurantId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.restaurantId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.restaurantId">Delete</a>
-            </td>
-        </tr>
-}
+        @*{
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.city)
+                        </td>
+                        <td>
+                            <a asp-controller="PhysicalTables" asp-action="Redisplay" asp-route-id="@item.restaurantId">Reserve a table here!</a>
+                        </td>
+                    </tr>
+            }*@
     </tbody>
 </table>

@@ -1,37 +1,256 @@
-@model RestaurantReserve.Models.TableLayoutViewModel
+﻿@model RestaurantReserve.Models.TableLayoutViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Restaurant Setup";
+}
+@{
+    Layout = "~/Views/Shared/_TableSetupLayout.cshtml";
 }
 
-<h2>Index</h2>
+<style>
+    .btn:hover {
+        border-radius: 4px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
 
-<div>
-    <h4>Restaurant</h4>
-    <hr />
-    @ViewData["currentUser"].ToString()
+    #overlay {
+        position: fixed;
+        top: 35%;
+        bottom: 25%;
+        left: 35%;
+        right: 35%;
+        width: 30%;
+        height: 30%;
+        background-color: #5cb85c;
+        filter: alpha(opacity=50);
+        z-index: 10000;
+        border-radius: 2em;
+        display: none;
+        text-align: center;
+    }
 
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.restaurant.name)
-        </dt>
-        @*<dd>
-            @Html.DisplayFor(model => model.restaurant.)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.city)
-        </dt>
-        <dd>*@
-            @Html.DisplayFor(model => model.restaurant.name)
-        </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.name)
-        </dd>*@
-    </dl>
+    #successtext {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: normal;
+        font-size: 2.0em;
+        margin-top: 1.3em;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+        color: white;
+    }
+
+    .blurred {
+        -webkit-filter: blur(5px);
+        -moz-filter: blur(5px);
+        -ms-filter: blur(5px);
+        filter: blur(5px);
+    }
+</style>
+
+<div id="preloader">
+    <div id="status">&nbsp;</div>
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="container">
+    
+
+
+    <div id="templates" style="top: 4em; position:fixed; background-color: #c1e1ec; width:20%; bottom:0; left:0em; height:100%; z-index:-1">
+        <div style="margin-left:1em; margin-top: 1em;">
+            <div id="circle" style="position:relative; width: 100px">
+                <img class="image" src="~/images/figures/circle.svg" height="100" />
+            </div>
+            <button onclick="InsertElem('circle')"> Insert </button>
+            <div id="square" style="position:relative; width: 100px">
+                <img class="image" src="~/images/figures/square.svg" height="100" />
+            </div>
+            <button onclick="InsertElem('square')"> Insert </button>
+
+            <div id="chair" style="display:block; width: 100px ">
+                <img class="image" src="~/images/figures/chair.svg" height="100" />
+            </div>
+            <button onclick="InsertElem('chair')"> Insert </button>
+        </div>
+    </div>
+
+    <div id="setuparea" style="top: 4em; position:fixed; background-color:#d3d3d3; width:80%; right:0;  height:100%; z-index:-2">
+
+    </div>
+
+    <span id="somebuttons">
+        <button class="btn btn-primary" style="position: fixed; top: 4.5em; right:3em; z-index : 2" onclick="Toggle()"> Toggle Controls </button>
+        <button class="btn btn-success btn-lg" style="position: fixed; right:3em; bottom: 1em; z-index : 2; width: 13em;  height: 3em; " onclick="SubmitSchema()"> Submit </button>
+        <button class="btn btn-danger" style="position: fixed; left:21em; bottom: 1em; z-index : 2; width: 13em;" onclick="ClearSchema()"> Clear </button>
+        <input type="hidden" id="restaurantIdDom" value="@ViewData["restauranId"]" />
+        <a class="btn btn-primary" style="position:absolute; bottom: 1em; width: 7em;" asp-area="" asp-controller="Restaurants" asp-action="Owned">Back</a>
+    </span>
+
+    <div id="overlay">
+        <div id="successmessage">
+            <span id="successtext"> Thank you for submitting your schema! </span>
+            <a class="btn btn-primary" style="margin-top: 0.5em" asp-area="" asp-controller="Restaurants" asp-action="Owned">Back to Restaurants</a>
+        </div>
+    </div>
+
+
+    @*<form asp-area="" asp-controller="TableLayout" asp-action="CreateSchema" method="post" id="submitLayoutForm" class="nav navbar-nav navbar pull-right">
+            <button style="position: fixed; right:0; bottom: 0; z-index : 2; width: 20em;  height: 2em; "> Submit </button>
+        </form>*@
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    var cloneCount = 1;
+    var toggledcontrols = false;
+    /*$('.draggableHelper').draggable();
+    ('.image').resizable();*/
+
+    //$('#submitLayoutForm').submit(SubmitForm);
+
+    function RotateRight(rotatefig) {
+        var elemRotate = $('#' + rotatefig);
+
+        var currentPos = $(elemRotate).getRotateAngle();
+        var currentIntPos = parseInt(currentPos[0]);
+        if (isNaN(currentIntPos)) {
+            currentIntPos = 0;
+        }
+        currentIntPos = currentIntPos + 10;
+        $(elemRotate).rotate(currentIntPos);
+    }
+
+    function RotateLeft(rotatefig) {
+        var elemRotate = document.getElementById(rotatefig);
+        var currentPos = $(elemRotate).getRotateAngle();
+        var currentIntPos = parseInt(currentPos[0]);
+        if (isNaN(currentIntPos)) {
+            currentIntPos = 0;
+        }
+        currentIntPos = currentIntPos - 10;
+        $(elemRotate).rotate(currentIntPos);
+    }
+
+    function Remove(arg) {
+        var elem = document.getElementById(arg);
+        $(elem).remove();
+    }
+
+    function InsertElem(figure) {
+        var figureDiv = document.getElementById(figure);
+        var newElemId = figure + cloneCount++;
+  
+        $(figureDiv)
+            .clone()
+            .attr('id', newElemId)
+            .attr('class', 'draggableHelper ' + figure)
+            .css('position', 'absolute')
+            .appendTo($("#setuparea"))
+
+        console.log("cloned" + newElemId);
+
+        $('#' + newElemId).append(" \
+          <div class='actionbuttons' > \
+            <button onclick=\"Remove(" + "\'" + newElemId + "\'" + ")\" class ='operation'> <i class='glyphicon glyphicon-trash'> </i> </button> \
+            <button onclick=\"RotateRight(" + "\'" + newElemId + "\'" + ")\" class ='operation'> <i class='glyphicon glyphicon-repeat'> </i> </button> \
+            <button onclick=\"RotateLeft(" + "\'" + newElemId + "\'" + ")\" class ='operation'> <i class='glyphicon glyphicon-repeat icon-flipped'> </i> </button>\
+          <div>")
+
+        if (toggledcontrols) {
+            $('#' + newElemId).find('.operation').toggle();
+        }
+
+        var currentImage = $('#' + newElemId).find('.image');
+        currentImage.resizable();
+        $('.draggableHelper').draggable({ containment: "#setuparea" });
+    }
+
+    function Toggle() {
+        toggledcontrols = !toggledcontrols;
+        $('.operation').toggle();
+        $('.ui-icon').toggle();
+        console.log(toggledcontrols);
+    }
+
+    function SubmitSchema() {
+        var generalArea = $('#setuparea');
+        var generatedShapes = generalArea.children("div");
+        var allObjects = new Array();
+
+        //loop through all found elements
+        $.each(generatedShapes, function (key, value) {
+            var currObject = $(value);
+
+            var rotationAngle = currObject.getRotateAngle()[0];
+            if (!rotationAngle) {
+                rotationAngle = 0;
+            }
+
+            //use this to exlude multiple rotations
+            rotationAngle = rotationAngle % 360;
+
+            //get the shape and then remove numbers
+            var idwithnumbers = $(this).attr("id");
+            var withNoDigits = idwithnumbers.replace(/[0-9]/g, '');
+            var currentRestaurantId = $('#restaurantIdDom').val();
+            console.log(currentRestaurantId);
+
+            //create a dynamic object to add all properties needed
+            var objectToSend = new Object();
+            objectToSend.leftPos = currObject.position().left;
+            objectToSend.topPos = currObject.position().top;
+            objectToSend.objHeight = currObject.find('img').height();
+            objectToSend.objWidth = currObject.find('img').width();
+            objectToSend.rotationAng = rotationAngle;
+            objectToSend.type = withNoDigits;
+            objectToSend.restaurantId = currentRestaurantId;
+            //add the object to the collections of all tables/chairs
+            allObjects.push(objectToSend);
+
+        });
+
+        console.log(JSON.stringify(allObjects))
+
+        var request = $.ajax({
+            type: "POST",
+            url: '@Url.Action("TestAction")',
+            contentType: "application/json",
+            dataType: "JSON",
+            data: JSON.stringify(allObjects),
+            success: function () {
+                console.log('passed');
+                $('#overlay').css("display", "inline");
+                $('#setuparea').addClass("blurred");
+                $('#templates').addClass("blurred");
+                $('#topmessage').addClass("blurred");
+                $('#somebuttons').addClass("blurred");
+            },
+            error: function (err) {
+                console.log(err);
+                alert("error");
+            }
+        });
+    }
+
+    function submitForm() {
+        var roles = ["role1", "role2", "role3"];
+
+        jQuery.ajax({
+            type: "POST",
+            url: "@Url.Action("AddUser")",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(roles),
+            success: function (data) { alert(data); },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
+
+    function ClearSchema(rotatefig) {
+        $("#setuparea").empty();
+    }
+
+</script>

@@ -1,4 +1,4 @@
-@model RestaurantReserve.Models.Restaurant
+@model RestaurantReserve.Models.TableLayoutViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -11,28 +11,49 @@
         <h4>Restaurant</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-   
-        <div class="form-group">
-            <label asp-for="city" class="col-md-2 control-label"></label>
+        @*<div class="form-group">
+            <label asp-for="UserId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="city" class="form-control" />
-                <span asp-validation-for="city" class="text-danger" />
+                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            <div class="col-md-10">
+                @*<select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>*@
+                <input type = "hidden" asp-for="restaurant.UserId" class="form-control" value="@ViewBag.UserId"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="restaurant.name" class="col-md-2 control-label"> Name</label>
+            <div class="col-md-10">
+                <input asp-for="restaurant.name" class="form-control" />
+                <span asp-validation-for="restaurant.name" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="address" class="col-md-2 control-label"></label>
+            <label asp-for="restaurant.address" class="col-md-2 control-label"> Address</label>
             <div class="col-md-10">
-                <input asp-for="address" class="form-control" />
-                <span asp-validation-for="address" class="text-danger" />
+                <input asp-for="restaurant.address" class="form-control" />
+                <span asp-validation-for="restaurant.address" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="name" class="col-md-2 control-label"></label>
+            <label asp-for="restaurant.city" class="col-md-2 control-label">City</label>
             <div class="col-md-10">
-                <input asp-for="name" class="form-control" />
-                <span asp-validation-for="name" class="text-danger" />
+                <input asp-for="restaurant.city" class="form-control" />
+                <span asp-validation-for="restaurant.city" class="text-danger" />
             </div>
         </div>
+        <div class="form-group">
+            <label asp-for="restaurant.pictureUrl" class="col-md-2 control-label">Picture Url</label>
+            <div class="col-md-10">
+                <input asp-for="restaurant.pictureUrl" class="form-control" />
+                <span asp-validation-for="restaurant.pictureUrl" class="text-danger" />
+            </div>
+        </div>
+    
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
@@ -42,7 +63,7 @@
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-area="" asp-controller="Restaurants" asp-action="Owned">Back to List</a>
 </div>
 
 @section Scripts {

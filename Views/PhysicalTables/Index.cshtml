@@ -1,0 +1,77 @@
+@model IEnumerable<RestaurantReserve.Models.PhysicalTable>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.isReserved)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.leftPos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.objHeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.objWidth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.restaurantId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rotationAng)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.topPos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.isReserved)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.leftPos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.objHeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.objWidth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.restaurantId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rotationAng)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.topPos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.type)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

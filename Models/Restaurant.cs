@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,25 +14,13 @@ namespace RestaurantReserve.Models
         public string name { get; set; }
         public string city { get; set; }
         public string address { get; set; }
-        public virtual List<Table> tables { get; set; }
+        [Url]
+        public string pictureUrl { get; set; }
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
         public virtual ICollection<RestaurantsUser> FavoriteRestaurantsUsers { get; set; }
     }
-
-    public class Table
-    {
-        public int tableId { get; set; }
-        public string type { get; set; }
-        public double leftPos { get; set; }
-        public double topPos { get; set; }
-        public double objHeight { get; set; }
-        public double objWidth { get; set; }
-        public int rotationAng { get; set; }
-        public bool isReserved { get; set; }
-    }
-
 
     public class RestaurantsUser
     {

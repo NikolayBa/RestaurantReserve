@@ -12,6 +12,21 @@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="restaurantId" />
+
+        <div class="form-group">
+            <div class="col-md-10">
+                @*<select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>*@
+                <input type="hidden" asp-for="UserId" class="form-control" value="@ViewBag.UserId" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger" />
+            </div>
+        </div>
         <div class="form-group">
             <label asp-for="address" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -27,12 +42,13 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="name" class="col-md-2 control-label"></label>
+            <label asp-for="pictureUrl" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="name" class="form-control" />
-                <span asp-validation-for="name" class="text-danger" />
+                <input asp-for="pictureUrl" class="form-control" />
+                <span asp-validation-for="pictureUrl" class="text-danger" />
             </div>
         </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
@@ -42,7 +58,7 @@
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-area="" asp-controller="Restaurants" asp-action="Owned">Back to List</a>
 </div>
 
 @section Scripts {

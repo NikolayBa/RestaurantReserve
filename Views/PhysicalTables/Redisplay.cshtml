@@ -1,0 +1,179 @@
+@model IEnumerable<RestaurantReserve.Models.PhysicalTable>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>@ViewData["RestaurantName"] 's </h2>
+<h3>Table Layout</h3>
+
+<table class="table" id="tbl1" hidden>
+    <thead>
+        <tr>
+            <th>
+                Reserved
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.leftPos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.objHeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.objWidth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.restaurantId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rotationAng)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.topPos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.type)
+            </th>
+            <th>
+                Id
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.reservedBy)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody id="tbody1">
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.isReserved)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.leftPos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.objHeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.objWidth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.restaurantId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rotationAng)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.topPos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.reservedBy)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                <a asp-action="ReserveSpecific" asp-route-id="@item.Id"> Reserve </a>
+            </td>
+        </tr>
+}
+        
+    </tbody>
+</table>
+
+<div id="reservationArea" style="position:relative; background-color:#d3d3d3; right:0;  height:60em;">
+
+</div>
+
+@*Render each table with specific id, inlude onClick Jquery changing red to affect it in the db too*@
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+
+<script>
+
+   
+    $(document).ready(function () {
+    
+        $('#tbody1').find('tr').each(function (i, el) {
+            var $tds = $(this).find('td'),
+            isReserved = $tds.eq(0);
+            isReservedvalue = isReserved.find("input").is(":checked");
+            leftPos = $tds.eq(1).text(),
+            objHeight = $tds.eq(2).text();
+            objWidth = $tds.eq(3).text();
+            restaurantidd = $tds.eq(4).text();
+            rotationAng = $tds.eq(5).text();
+            topPos = $tds.eq(6).text();
+            tableType = $tds.eq(7).text();
+            tableId = $tds.eq(8).text();
+
+            trimmedleftPos = $.trim(leftPos);
+            trimmedtopPos = $.trim(topPos);
+            trimmedobjHeight = $.trim(objHeight);
+            trimmedobjWidth = $.trim(objWidth);
+            trimmedrotationAng = $.trim(rotationAng);
+            trimmedtableId = $.trim(tableId);
+            trimmedtype = $.trim(tableType);
+
+            console.log("Next " + trimmedtableId);
+            console.log("left position: " + trimmedleftPos);
+            console.log("top position: " + trimmedtopPos);
+            console.log("Height: " + trimmedobjHeight);
+            console.log("Width: " + trimmedobjWidth);
+            console.log("Rot Ang: " + trimmedrotationAng);
+            console.log("Type: " + trimmedtype);
+            console.log(isReservedvalue);
+
+            var atag = $('<a></a>');
+
+            var newElemId = 'id' + i;
+            var mydiv = $('<div></div>');
+            mydiv.attr("class", trimmedtype);
+            mydiv.attr("id", newElemId);
+            var img = $('<img>');
+            if(!isReservedvalue){
+                img.attr('src', "~/../../../images/figures/" + trimmedtype + ".svg");
+                atag.attr("href", "/PhysicalTables/ReserveSpecific/" + trimmedtableId);
+            } else {
+                img.attr('src', "~/../../../images/figures/red" + trimmedtype + ".svg");
+                img.css({'cursor': 'not-allowed' });
+            }
+            img.height(trimmedobjHeight);
+            img.width(trimmedobjWidth);
+            
+            var angleTrimmed = parseInt(trimmedrotationAng);
+            
+
+            mydiv.rotate(angleTrimmed);
+            mydiv.css({
+                'left': trimmedleftPos + "px",
+                'top': trimmedtopPos + "px",
+                'position': 'absolute',
+                'z-index' : 10
+            });
+            img.appendTo(mydiv);
+            
+            mydiv.appendTo(atag);
+            atag.appendTo('#reservationArea');
+       
+        });
+
+        /*$(".chair").click(function () {
+            var shapetype = $(this).attr("class");
+            var newImg = "~/../../../images/figures/red" + shapetype + ".png";
+            $(this).find('img').attr("src", newImg);
+        });*/
+
+    });
+
+</script>

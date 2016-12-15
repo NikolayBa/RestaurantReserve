@@ -1,0 +1,93 @@
+@model RestaurantReserve.Models.PhysicalTable
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>PhysicalTable</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="isReserved" />
+                    <label asp-for="isReserved"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="leftPos" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="leftPos" class="form-control" />
+                <span asp-validation-for="leftPos" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="objHeight" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="objHeight" class="form-control" />
+                <span asp-validation-for="objHeight" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="objWidth" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="objWidth" class="form-control" />
+                <span asp-validation-for="objWidth" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="restaurantId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="restaurantId" class="form-control" />
+                <span asp-validation-for="restaurantId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="rotationAng" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="rotationAng" class="form-control" />
+                <span asp-validation-for="rotationAng" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="topPos" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="topPos" class="form-control" />
+                <span asp-validation-for="topPos" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="type" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="type" class="form-control" />
+                <span asp-validation-for="type" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="reservedBy" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="reservedBy" class="form-control" />
+                <span asp-validation-for="reservedBy" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a href="javascript:void(0);" onclick="history.go(-1);">Back</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

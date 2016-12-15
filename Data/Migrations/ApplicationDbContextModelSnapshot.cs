@@ -172,6 +172,36 @@ namespace RestaurantReserve.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("RestaurantReserve.Models.PhysicalTable", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("isReserved");
+
+                    b.Property<double>("leftPos");
+
+                    b.Property<double>("objHeight");
+
+                    b.Property<double>("objWidth");
+
+                    b.Property<string>("reservedBy");
+
+                    b.Property<string>("reservedFor");
+
+                    b.Property<int>("restaurantId");
+
+                    b.Property<int>("rotationAng");
+
+                    b.Property<double>("topPos");
+
+                    b.Property<string>("type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PhysicalTables");
+                });
+
             modelBuilder.Entity("RestaurantReserve.Models.Restaurant", b =>
                 {
                     b.Property<int>("restaurantId")
@@ -184,6 +214,8 @@ namespace RestaurantReserve.Data.Migrations
                     b.Property<string>("city");
 
                     b.Property<string>("name");
+
+                    b.Property<string>("pictureUrl");
 
                     b.HasKey("restaurantId");
 
@@ -205,34 +237,6 @@ namespace RestaurantReserve.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RestaurantsUser");
-                });
-
-            modelBuilder.Entity("RestaurantReserve.Models.Table", b =>
-                {
-                    b.Property<int>("tableId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("isReserved");
-
-                    b.Property<double>("leftPos");
-
-                    b.Property<double>("objHeight");
-
-                    b.Property<double>("objWidth");
-
-                    b.Property<int?>("restaurantId");
-
-                    b.Property<int>("rotationAng");
-
-                    b.Property<double>("topPos");
-
-                    b.Property<string>("type");
-
-                    b.HasKey("tableId");
-
-                    b.HasIndex("restaurantId");
-
-                    b.ToTable("Table");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -290,13 +294,6 @@ namespace RestaurantReserve.Data.Migrations
                         .WithMany("FavoriteRestaurantUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RestaurantReserve.Models.Table", b =>
-                {
-                    b.HasOne("RestaurantReserve.Models.Restaurant")
-                        .WithMany("tables")
-                        .HasForeignKey("restaurantId");
                 });
         }
     }

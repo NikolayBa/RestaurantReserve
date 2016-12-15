@@ -38,5 +38,7 @@ namespace RestaurantReserve.Data
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
         public DbSet<Restaurant> Restaurants { get; set; }
+
+        public DbSet<PhysicalTable> PhysicalTables { get; set; }
     }
 }

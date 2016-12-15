@@ -1,0 +1,66 @@
+@model RestaurantReserve.Models.PhysicalTable
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PhysicalTable</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.isReserved)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.isReserved)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.leftPos)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.leftPos)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.objHeight)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.objHeight)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.objWidth)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.objWidth)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.restaurantId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.restaurantId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.rotationAng)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.rotationAng)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.topPos)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.topPos)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.type)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.type)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

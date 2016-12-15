@@ -8,9 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using RestaurantReserve.Data;
 using RestaurantReserve.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestaurantReserve.Controllers
 {
@@ -18,8 +17,7 @@ namespace RestaurantReserve.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-
-
+        
 
         public RestaurantsController(ApplicationDbContext context)
         {
@@ -27,30 +25,25 @@ namespace RestaurantReserve.Controllers
         }
 
         // GET: Restaurants
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Owned()
         {
-            return View(await _context.Restaurants.ToListAsync());
-            //return View(await _context.ApplicationUser());
-            //ClaimsPrincipal currentUser = this.User;
-            //var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //return View(await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Ownedrestaurants.First().name == "Happy"));
-            //return View(await _context.ApplicationUser.First
-         
+             ClaimsPrincipal currentUser = this.User;
+            var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var applicationDbContext = _context.Restaurants.Include(r => r.User);
 
-            //var restaurant = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == currentUserID);
+            var ownedRestaurants = applicationDbContext.Where(r => r.UserId == currentUserID);
 
-            //var currentrestaurant = restaurant.Ownedrestaurants.ToList();
-            //return View(currentrestaurant);
-
-            //return View(_context.Restaurants.ToLookup(m => m.))
+            return View(await ownedRestaurants.ToListAsync());
         }
 
-        public async Task<IActionResult> Tables()
+        public async Task<IActionResult> Index()
         {
-            ClaimsPrincipal currentUser = this.User;
-            var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //ClaimsPrincipal currentUser = this.User;
+            //var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //var applicationDbContext = _context.Restaurants.Include(r => r.User);
 
-            ViewData["currentUser"] = currentUserID;
+            //var ownedRestaurants = applicationDbContext.Where(r => r.UserId == currentUserID);
+
             return View(await _context.Restaurants.ToListAsync());
         }
 
@@ -63,9 +56,6 @@ namespace RestaurantReserve.Controllers
             }
 
             var restaurant = await _context.Restaurants.SingleOrDefaultAsync(m => m.restaurantId == id);
-            //var restaurant = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Ownedrestaurants.First().restaurantId == id);
-
-            //var currentrestaurant = restaurant.Ownedrestaurants.Single(m => m.restaurantId == id);
             if (restaurant == null)
             {
                 return NotFound();
@@ -73,11 +63,34 @@ namespace RestaurantReserve.Controllers
 
             return View(restaurant);
         }
+        public async Task<IActionResult> Redisplay(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var restaurant = await _context.Restaurants.SingleOrDefaultAsync(m => m.restaurantId == id);
+            if (restaurant == null)
+            {
+                return NotFound();
+            }
+
+            var applicationDbContext = _context.PhysicalTables;
+
+            var currentPhysicalTables = applicationDbContext.Where(r => r.restaurantId == id);
+
+            return View(await currentPhysicalTables.ToListAsync());
+        }
 
         // GET: Restaurants/Create
         [Authorize]
         public IActionResult Create()
         {
+            ClaimsPrincipal currentUser = this.User;
+            var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //ViewData["UserId"] = new SelectList(_context.ApplicationUser, "Id", "Id");
+            ViewData["UserId"] = currentUserID;
             return View();
         }
 
@@ -86,14 +99,17 @@ namespace RestaurantReserve.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("restaurantId,address,city,name")] Restaurant restaurant)
+        public async Task<IActionResult> Create([Bind("restaurantId,address,city,name,pictureUrl,UserId")] Restaurant restaurant)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(restaurant);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Owned", "Restaurants");
             }
+            ViewData["UserId"] = new SelectList(_context.ApplicationUser, "Id", "Id", restaurant.UserId);
+
+
             return View(restaurant);
         }
 
@@ -110,6 +126,12 @@ namespace RestaurantReserve.Controllers
             {
                 return NotFound();
             }
+            //ViewData["UserId"] = new SelectList(_context.ApplicationUser, "Id", "Id", restaurant.UserId);
+
+            ClaimsPrincipal currentUser = this.User;
+            var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //ViewData["UserId"] = new SelectList(_context.ApplicationUser, "Id", "Id");
+            ViewData["UserId"] = currentUserID;
             return View(restaurant);
         }
 
@@ -118,7 +140,7 @@ namespace RestaurantReserve.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("restaurantId,address,city,name")] Restaurant restaurant)
+        public async Task<IActionResult> Edit(int id, [Bind("restaurantId,UserId,address,city,name,pictureUrl")] Restaurant restaurant)
         {
             if (id != restaurant.restaurantId)
             {
@@ -143,8 +165,9 @@ namespace RestaurantReserve.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Owned", "Restaurants");
             }
+            ViewData["UserId"] = new SelectList(_context.ApplicationUser, "Id", "Id", restaurant.UserId);
             return View(restaurant);
         }
 
@@ -173,7 +196,7 @@ namespace RestaurantReserve.Controllers
             var restaurant = await _context.Restaurants.SingleOrDefaultAsync(m => m.restaurantId == id);
             _context.Restaurants.Remove(restaurant);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Owned", "Restaurants");
         }
 
         private bool RestaurantExists(int id)

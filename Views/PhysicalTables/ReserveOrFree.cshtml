@@ -1,0 +1,114 @@
+@model RestaurantReserve.Models.PhysicalTable
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2> Change the parameters of the following table</h2>
+
+<form asp-action="ReservationEdit">
+    <div class="form-horizontal">
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id"  />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input id='agreement' asp-for="isReserved" />
+                    <label asp-for="isReserved"> Currently Reserved </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label"> Reservation time: </label>
+            <div class="col-md-2-offset-2 col-md-10">
+                <input id="reservationtime" asp-for="reservedFor" class="form-control" />
+                <span asp-validation-for="reservedFor" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label"> Reserved By </label>
+            <div class="col-md-2-offset-2 col-md-10">
+                <input id="reservedbyperson" asp-for="reservedBy" value='@ViewData["currentUserName"]' class="form-control" />
+                <span asp-validation-for="reservedBy" class="text-danger" />
+            </div>
+        </div>
+      
+        <div>
+            <div class="col-md-10">
+                <input asp-for="leftPos" type="hidden" class="form-control" />
+                <span asp-validation-for="leftPos" class="text-danger" />
+            </div>
+        </div>
+        <div>
+            <div>
+                <input asp-for="objHeight" type="hidden" class="form-control" />
+                <span asp-validation-for="objHeight" class="text-danger" />
+            </div>
+        </div>
+        <div>
+            <div>
+                <input asp-for="objWidth" type="hidden" class="form-control" />
+                <span asp-validation-for="objWidth" class="text-danger" />
+            </div>
+        </div>
+        <div>
+            <div>
+                <input asp-for="restaurantId" type="hidden" class="form-control" />
+                <span asp-validation-for="restaurantId" class="text-danger" />
+            </div>
+        </div>
+        <div>
+            <span>
+                <input asp-for="rotationAng" type="hidden" class="form-control" />
+                <span asp-validation-for="rotationAng" class="text-danger" />
+            </span>
+        </div>
+        <div>
+
+            <span>
+                <input asp-for="topPos" type="hidden" class="form-control" />
+                <span asp-validation-for="topPos" class="text-danger" />
+            </span>
+        </div>
+        <div>
+            <div>
+                <input asp-for="type" style="position:fixed" type="hidden" class="form-control" />
+                <span asp-validation-for="type" class="text-danger" />
+            </div>
+        </div>
+  
+   
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-10">
+                <input type="submit" value="Proceed" class="btn btn-success" />
+                <a class="btn btn-default" href="javascript:void(0);" onclick="history.go(-1);">Back</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    @*<a asp-action="Index">Back to List</a>*@
+
+</div>
+
+<script src="~/js/jquery.min.js"></script>
+<script>
+    //var checked = $('#agree').is(":checked");
+
+    $(document).ready(function () {
+
+        $("#agreement").click(function () {
+            if (!($(this).is(':checked'))) {
+                $('#reservationtime').val('');
+                $('#reservedbyperson').val('');
+            }
+        });
+    });
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
